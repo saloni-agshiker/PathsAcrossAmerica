@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+<div class="p-3">
+  <div class="container">
+    <div class="row mt-3">
+      <div class="col-md-6 mx-auto mb-3">
+        <h2>{{ template_data.running_place.name }}</h2>
+        <hr />
+        <p><b>Description:</b> {{
+          template_data.running_place.description }}</p>
+      </div>
+      <div class="col-md-6 mx-auto mb-3 text-center">
+        <img src="{% static 'img/background.jpg' %}"
+          class="rounded" />
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}

@@ -17,20 +17,15 @@ def index(request):
     template_data['running_places'] = RunningPlace.objects.all()
     return render(request, 'running_places/index.html', {'template_data': template_data})
 
-def add_place(request):
+def show(request):
     template_data = {}
     template_data['title'] = 'Add Place'
-    return render(request, 'running_places/add_place.html', {'template_data': template_data})
-
-def show(request, id):
-    running_place = RunningPlace.objects.get(id=id)
-    template_data = {}
-    template_data['title'] = RunningPlace.name
-    template_data['running_place'] = running_place
     return render(request, 'running_places/show.html',
                   {'template_data': template_data})
 
 def create_running_place(request):
+    template_data = {}
+    template_data['title'] = 'Add Place'
     if request.method == 'POST' and request.POST['name'] != '':
         running_place = RunningPlace()
         running_place.name = request.POST['name']

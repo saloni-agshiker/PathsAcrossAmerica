@@ -1,4 +1,5 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from .models import RunningPlace
 
 # Create your views here.
 
@@ -13,7 +14,7 @@ running_places = [
 def index(request):
     template_data = {}
     template_data['title'] = 'Running Places'
-    template_data['running_places'] = running_places
+    template_data['running_places'] = RunningPlace.objects.all()
     return render(request, 'running_places/index.html', {'template_data': template_data})
 
 def add_place(request):
@@ -22,9 +23,19 @@ def add_place(request):
     return render(request, 'running_places/add_place.html', {'template_data': template_data})
 
 def show(request, id):
-    running_place = running_places[id - 1]
+    running_place = RunningPlace.objects.get(id=id)
     template_data = {}
-    template_data['title'] = running_place['name']
+    template_data['title'] = RunningPlace.name
     template_data['running_place'] = running_place
     return render(request, 'running_places/show.html',
                   {'template_data': template_data})
+
+def create_running_place(request):
+    if request.method == 'POST' and request.POST['name'] != '':
+        running_place = RunningPlace()
+        running_place.name = request.POST['name']
+        running_place.description = request.POST['description']
+        running_place.save()
+        return redirect('running_places.show')
+    else:
+        return redirect('running_places.show')

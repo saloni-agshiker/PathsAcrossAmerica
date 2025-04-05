@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from .models import RunningPlace
 
@@ -30,6 +31,7 @@ def show(request):
     return render(request, 'running_places/show.html',
                   {'template_data': template_data})
 
+@login_required
 def create_running_place(request):
     template_data = {}
     template_data['title'] = 'Add Place'

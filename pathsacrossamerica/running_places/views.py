@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from .models import RunningPlace
 
@@ -12,17 +13,25 @@ running_places = [
     },
 ]
 def index(request):
+    search_term = request.GET.get('search')
+    if search_term:
+        running_places = RunningPlace.objects.filter(name__icontains=search_term)
+    else:
+        running_places = RunningPlace.objects.all()
     template_data = {}
     template_data['title'] = 'Running Places'
     template_data['running_places'] = RunningPlace.objects.all()
     return render(request, 'running_places/index.html', {'template_data': template_data})
 
 def show(request):
+    runningPlace = RunningPlace.objects.get(id=id)
     template_data = {}
-    template_data['title'] = 'Add Place'
+    template_data['title'] = runningPlace.name
+    template_data['runningPlace'] = runningPlace
     return render(request, 'running_places/show.html',
                   {'template_data': template_data})
 
+@login_required
 def create_running_place(request):
     template_data = {}
     template_data['title'] = 'Add Place'

@@ -9,7 +9,7 @@
           <b class="text-start">Add a Running Place
             </b><br /><br />
           <form method="POST" action=
-            "{% url 'running_places.create_review' %}">
+            "{% url 'running_places.create_running_place' %}">
             {% csrf_token %}
             <p>
               <label for="name">Name:</label>
@@ -18,10 +18,51 @@
               id="name"></textarea>
             </p>
             <p>
+              <label for="autocomplete">Address:</label>
+              <input id="autocomplete" type="text" name="address" required>
+            </p>
+            <p>
               <label for="description">Description:</label>
               <textarea name="description" required
               class="form-control"
               id="description"></textarea>
+            </p>
+            <p>
+              <label>Path Type:</label>
+              <label>
+                <input type="checkbox" name ="path_type" value="SO"> Soft
+              </label>
+              <label>
+                <input type="checkbox" name ="path_type" value="GR"> Gravel
+              </label>
+              <label>
+                <input type="checkbox" name ="path_type" value="DT"> Dirt
+              </label>
+              <label>
+                <input type="checkbox" name ="path_type" value="HD"> Hard
+              </label>
+              <label>
+                <input type="checkbox" name ="path_type" value="PV"> Paved
+              </label>
+              <label>
+                <input type="checkbox" name ="path_type" value="CO"> Concrete
+              </label>
+            </p>
+              <p>
+              <label>Terrain Type:</label>
+              <label>
+                <input type="checkbox" name ="terrain_type" value="FL"> Flat
+              </label>
+              <label>
+                <input type="checkbox" name ="terrain_type" value="HL"> Hilly
+              </label>
+              <label>
+                <input type="checkbox" name ="terrain_type" value="UN"> Uneven
+              </label>
+            </p>
+            <p>
+              <label for="length">Length of the path (in miles):</label>
+              <input type="number" id="length" name="length">
             </p>
             <div class="text-center">
               <button type="submit"
@@ -30,6 +71,20 @@
               </button>
             </div>
           </form>
+
+          <script>
+            fetch('/api/get-maps-key')
+                    .then(response => response.json())
+                    .then(data => {
+                      const script = document.createElement('script');
+                      script.src = 'https://maps.googleapis.com/maps/api/js?key=${data.key}&libraries=places';
+                      script.onload = () => {
+                        const input = document.getElementById('autocomplete');
+                        new google.maps.places.Autocomplete(input, { types: ['address'] });
+                      };
+                      document.head.appendChild(script);
+                    });
+          </script>
         </div>
       </div>
     </div>

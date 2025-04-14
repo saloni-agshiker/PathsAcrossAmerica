@@ -107,6 +107,5 @@ def delete_review(request, id, review_id):
     review.delete()
     return redirect('running_places.show', id=id)
 
-
-def get_maps_key(request):
-    return JsonResponse({'key': os.environ['MAPS_API_KEY']})
+def get_maps_key():
+    return JsonResponse({ 'key': os.environ['MAPS_API_KEY'] })

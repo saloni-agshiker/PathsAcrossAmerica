@@ -8,8 +8,7 @@
         <div class="card-body">
           <b class="text-start">Add a Running Place
             </b><br /><br />
-          <form method="POST" action=
-            "{% url 'running_places.create_running_place' %}">
+          <form onsubmit="return validateAddress()" method="POST" action="{% url 'running_places.create_running_place' %}">
             {% csrf_token %}
             <p>
               <label for="name">Name:</label>
@@ -18,8 +17,8 @@
               id="name"></textarea>
             </p>
             <p>
-              <label for="autocomplete">Address:</label>
-              <input id="autocomplete" type="text" name="address" required>
+              <label for="address">Address:</label>
+              <input id="address" type="text" name="address" required>
             </p>
             <p>
               <label for="description">Description:</label>
@@ -30,34 +29,25 @@
             <p>
               <label>Path Type:</label>
               <label>
-                <input type="checkbox" name ="path_type" value="SO"> Soft
+                <input type="radio" name ="path_type" value="GR"> Gravel
               </label>
               <label>
-                <input type="checkbox" name ="path_type" value="GR"> Gravel
+                <input type="radio" name ="path_type" value="DT"> Dirt
               </label>
               <label>
-                <input type="checkbox" name ="path_type" value="DT"> Dirt
+                <input type="radio" name ="path_type" value="PV"> Paved
               </label>
               <label>
-                <input type="checkbox" name ="path_type" value="HD"> Hard
-              </label>
-              <label>
-                <input type="checkbox" name ="path_type" value="PV"> Paved
-              </label>
-              <label>
-                <input type="checkbox" name ="path_type" value="CO"> Concrete
+                <input type="radio" name ="path_type" value="CO"> Concrete
               </label>
             </p>
               <p>
               <label>Terrain Type:</label>
               <label>
-                <input type="checkbox" name ="terrain_type" value="FL"> Flat
+                <input type="radio" name ="terrain_type" value="FL"> Flat
               </label>
               <label>
-                <input type="checkbox" name ="terrain_type" value="HL"> Hilly
-              </label>
-              <label>
-                <input type="checkbox" name ="terrain_type" value="UN"> Uneven
+                <input type="radio" name ="terrain_type" value="HL"> Hilly
               </label>
             </p>
             <p>
@@ -73,6 +63,7 @@
           </form>
 
           <script>
+
             fetch('/api/get-maps-key')
                     .then(response => response.json())
                     .then(data => {

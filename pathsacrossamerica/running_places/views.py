@@ -49,7 +49,7 @@ def create_running_place(request):
         running_place.terrain_type = request.POST['terrain_type']
         running_place.length = request.POST['length']
         running_place.save()
-        return redirect('running_places.show')
+        return redirect('home.index')
     else:
         return render(request, 'running_places/add_place.html', {'template_data': template_data})
 

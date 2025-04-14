@@ -11,4 +11,5 @@ urlpatterns = [
     path('<int:id>/review/<int:review_id>/delete/',
         views.delete_review, name='running_places.delete_review'),
     path('create/', views.create_running_place, name='running_places.create_running_place'),
+    path('api/get_maps_key', views.get_maps_key, name='get_maps_key'),
 ]

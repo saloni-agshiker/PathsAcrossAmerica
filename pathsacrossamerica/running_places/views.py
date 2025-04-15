@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import RunningPlace, Review
-
+from .utils import geocode_address, haversine_distance
 
 # Create your views here.
 
@@ -91,3 +91,47 @@ def delete_review(request, id, review_id):
         user=request.user)
     review.delete()
     return redirect('running_places.show', id=id)
+
+def find_closest_places(request):
+    address = request.GET.get('address')
+
+    # if no address, renders a form message
+    if not address:
+        return render(request, 'index.html', {"message": "Please enter a location"})
+
+    user_lat, user_lng = geocode_address(address)
+    if user_lat is None or user_lng is None:
+        # geocoding failed or location not found
+        return render(request, 'index.html', {"message": f"Could not find the location '{address}'. Please try again."})
+
+    # queries all places
+    places = RunningPlace.objects.all()
+
+    # calculate distance for each place
+    place_distances = []
+    for place in places:
+        dist = haversine_distance(
+            float(user_lat), float(user_lng),
+            float(place.latitude), float(place.longitude)
+        )
+        place_distances.append((dist, place))
+
+    #sort (distance, place) pairs
+    place_distances.sort(key=lambda x: x[0])
+
+    #slice top 3
+    top_3 = place_distances[:3]
+
+    #creates results (list of dictionaries) each containing dist, place obj from top 3 results
+    #this is then passed into places_list.html template
+    context = {
+        'address': address,
+        'results': [
+            {
+                'distance': d,
+                'place': p,
+            } for (d, p) in top_3
+        ]
+    }
+
+    return render(request, 'places_list.html', context)

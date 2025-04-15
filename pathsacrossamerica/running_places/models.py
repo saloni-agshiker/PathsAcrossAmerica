@@ -34,6 +34,8 @@ class RunningPlace(models.Model):
     path_type = models.CharField(max_length=2, choices=PATH_TYPE_CHOICES.items(), default="SOFT")
     terrain_type = models.CharField(max_length=2, choices=TERRAIN_TYPE_CHOICES.items(), default="FLAT")
     length = models.IntegerField()
+    longitude = models.DecimalField(max_digits=9, decimal_places=6)
+    latitude = models.DecimalField(max_digits=9, decimal_places=6)
 
     def __str__(self):
         return str(self.id) + ' - ' + self.name

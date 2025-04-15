@@ -1,46 +1,56 @@
 {% extends 'base.html' %}
-{% block content %}
 {% load static %}
+{% block content %}
+
 <div class="p-3">
   <div class="container">
     <div class="row mt-3">
       <div class="col mx-auto mb-3">
-        <h2>Running Places</h2>
+        <h2>Search for Running Locations</h2>
         <hr />
-         <p class="card-text">
-          <form method="GET">
-            <div class="row">
-              <div class="col-auto">
-                <div class="input-group col-auto">
-                  <div class="input-group-text">
-                    Search</div>
-                  <input type="text" class="form-control"
-                    name="search">
-                </div>
-              </div>
-              <div class="col-auto">
-                <button class="btn bg-dark text-white"
-                  type="submit">Search</button>
+
+        <!-- Display any error/success message if passed from the view -->
+        {% if message %}
+          <p style="color: red;">{{ message }}</p>
+        {% endif %}
+
+        <!-- The Search Form -->
+        <form method="GET" action="{% url 'find_closest_places' %}">
+          <div class="row">
+            <div class="col-auto">
+              <label for="address" class="form-label">Enter a location:</label>
+              <div class="input-group">
+                <span class="input-group-text">Search</span>
+                <!-- 'name="address"' so the view can pick up request.GET.get('address') -->
+                <input type="text" id="address" name="address" class="form-control" required>
               </div>
             </div>
-          </form>
-        </p>
+            <div class="col-auto align-self-end">
+              <button class="btn bg-dark text-white" type="submit">
+                Search
+              </button>
+            </div>
+          </div>
+        </form>
       </div>
     </div>
+
+    <!-- Example: Display existing data (optional) -->
     <div class="row">
       {% for movie in template_data.movies %}
       <div class="col-md-4 col-lg-3 mb-2">
         <div class="p-2 card align-items-center pt-4">
           <div class="card-body text-center">
-              <a href="{% url 'running_places.show' id=running_place.id %}"
-              class="btn bg-dark text-white">
-            {{ running_place.name }}
-              </a>
+            <a href="{% url 'running_places.show' id=running_place.id %}" class="btn bg-dark text-white">
+              {{ running_place.name }}
+            </a>
           </div>
         </div>
       </div>
       {% endfor %}
     </div>
+
   </div>
 </div>
+
 {% endblock content %}

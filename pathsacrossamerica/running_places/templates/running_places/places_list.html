@@ -7,6 +7,7 @@
     <h1>Closest Places to "{{ address }}"</h1>
 
     {% if results %}
+    <img src = "{{ static_map_url }}" alt = "Static map of 3 closest places" />
         <ul>
         {% for item in results %}
             <li>

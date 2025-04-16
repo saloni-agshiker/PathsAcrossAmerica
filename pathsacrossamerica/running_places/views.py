@@ -1,3 +1,5 @@
+import os
+
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import RunningPlace, Review
@@ -104,32 +106,94 @@ def find_closest_places(request):
         # geocoding failed or location not found
         return render(request, 'index.html', {"message": f"Could not find the location '{address}'. Please try again."})
 
+        # --- Testing Without Database Records ---
+        # If there are no records, simulate dummy data.
+    if not RunningPlace.objects.exists():
+        # Create dummy results with hardcoded coordinates for testing.
+        results = [
+            {
+                'distance': 0.0,
+                'place': type("Dummy", (),
+                              {"name": "Test Place 1", "description": "A dummy location", "latitude": 33.7490,
+                               "longitude": -84.3880})(),
+                'lat': 33.7490,
+                'lng': -84.3880,
+            },
+            {
+                'distance': 1.2,
+                'place': type("Dummy", (),
+                              {"name": "Test Place 2", "description": "Another dummy", "latitude": 33.7580,
+                               "longitude": -84.3900})(),
+                'lat': 33.7580,
+                'lng': -84.3900,
+            },
+            {
+                'distance': 2.5,
+                'place': type("Dummy", (),
+                              {"name": "Test Place 3", "description": "Yet another dummy", "latitude": 33.7600,
+                               "longitude": -84.3950})(),
+                'lat': 33.7600,
+                'lng': -84.3950,
+            },
+        ]
+
+    else:
     # queries all places
-    places = RunningPlace.objects.all()
+        places = RunningPlace.objects.all()
+        # calculate distance for each place
+        place_distances = []
+        for place in places:
+            dist = haversine_distance(
+                float(user_lat), float(user_lng),
+                float(place.latitude), float(place.longitude)
+            )
+            place_distances.append((dist, place))
 
-    # calculate distance for each place
-    place_distances = []
-    for place in places:
-        dist = haversine_distance(
-            float(user_lat), float(user_lng),
-            float(place.latitude), float(place.longitude)
-        )
-        place_distances.append((dist, place))
+        #sort (distance, place) pairs
+        place_distances.sort(key=lambda x: x[0])
 
-    #sort (distance, place) pairs
-    place_distances.sort(key=lambda x: x[0])
+        #slice top 3
+        top_3 = place_distances[:3]
 
-    #slice top 3
-    top_3 = place_distances[:3]
+        results = [
+            {
+                'distance' : d,
+                'place': p,
+                'lat': float(p.latitude),
+                'lng': float(p.longitude),
+            } for(d,p) in top_3
+        ]
+
+    markers_str = ""
+    for i, r in enumerate(results, start=1):
+        markers_str += f"&markers=color:red%7Clabel:{i}%7C{r['lat']},{r['lng']}"
+
+    key = os.getenv("MAPS_API_KEY")  # Make sure your .env is correctly loaded!
+    # Use the user's search coordinates as the map's center:
+    center = f"{user_lat},{user_lng}"
+
+    # Create the URL for the static map:
+    static_map_url = (
+        "https://maps.googleapis.com/maps/api/staticmap"
+        f"?center={center}"
+        "&zoom=12"
+        "&size=600x400"
+        f"{markers_str}"
+        f"&key={key}"
+    )
 
     #creates results (list of dictionaries) each containing dist, place obj from top 3 results
     #this is then passed into places_list.html template
     context = {
         'address': address,
+        'user_lat': user_lat,
+        'user_lng': user_lng,
         'results': [
             {
                 'distance': d,
                 'place': p,
+                'lat': float(p.latitude),
+                'lng': float(p.longitude),
             } for (d, p) in top_3
         ]
     }

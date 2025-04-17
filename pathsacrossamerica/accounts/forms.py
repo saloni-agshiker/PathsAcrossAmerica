@@ -9,8 +9,7 @@ class CustomErrorList(ErrorList):
     def __str__(self):
         if not self:
             return ''
-        return mark_safe(''.join([
-            f'<div class="alert alert-danger" role="alert"> {e}</div>' for e in self]))
+        return mark_safe(''.join([f'<div class="alert alert-danger" role="alert"> {e}</div>' for e in self]))
 
 class CustomUserCreationForm(UserCreationForm):
     security_answer1 = forms.CharField(

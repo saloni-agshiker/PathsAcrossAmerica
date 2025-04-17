@@ -1,2 +1,5 @@
 .env
 #excludes .env file
+
+__pycache__/
+*.py[cod]

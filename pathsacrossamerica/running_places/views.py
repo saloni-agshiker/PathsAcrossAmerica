@@ -1,8 +1,18 @@
 import os
 
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import RunningPlace, Review
+from dotenv import load_dotenv
+import os
+
+#loads.env file
+load_dotenv()
+
+#retrieve api key from variable in env file
+key = os.getenv("MAPS_API_KEY")
+location = "Atlanta, Georgia"
 from .utils import geocode_address, haversine_distance
 
 # Create your views here.
@@ -30,15 +40,21 @@ def index(request):
 def create_running_place(request):
     template_data = {}
     template_data['title'] = 'Add Place'
+    if request.method == 'GET':
+        return render(request, 'running_places/add_place.html',
+                      {'template_data': template_data})
     if request.method == 'POST' and request.POST['name'] != '':
         running_place = RunningPlace()
         running_place.name = request.POST['name']
+        running_place.address = request.POST['address']
         running_place.description = request.POST['description']
+        running_place.path_type = request.POST['path_type']
+        running_place.terrain_type = request.POST['terrain_type']
+        running_place.length = request.POST['length']
         running_place.save()
-        return redirect('running_places.show')
+        return redirect('home.index')
     else:
-        return redirect('running_places.show')
-    return render(request, 'running_places/add_place.html', {'template_data': template_data})
+        return render(request, 'running_places/add_place.html', {'template_data': template_data})
 
 def show(request, id):
     place = get_object_or_404(RunningPlace, pk=id)
@@ -93,6 +109,9 @@ def delete_review(request, id, review_id):
         user=request.user)
     review.delete()
     return redirect('running_places.show', id=id)
+
+def get_maps_key():
+    return JsonResponse({ 'key': os.environ['MAPS_API_KEY'] })
 
 def find_closest_places(request):
 

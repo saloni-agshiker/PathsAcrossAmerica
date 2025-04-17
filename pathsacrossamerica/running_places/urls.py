@@ -12,4 +12,5 @@ urlpatterns = [
         views.delete_review, name='running_places.delete_review'),
     path('create/', views.create_running_place, name='running_places.create_running_place'),
     path('search/', views.find_closest_places, name='running_places.find_closest_places'),
+    path('api/get_maps_key', views.get_maps_key, name='get_maps_key'),
 ]

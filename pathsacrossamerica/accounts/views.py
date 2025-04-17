@@ -104,4 +104,4 @@ def password_reset(request, username, token):
     except User.DoesNotExist:
         template_data['error'] = 'Invalid user.'
         return render(request, 'accounts/password_reset.html', {'template_data': template_data})
-    return render(request, 'accounts/password_reset.html', {'template_data': template_data})
+    return login(request)

@@ -95,13 +95,21 @@ def delete_review(request, id, review_id):
     return redirect('running_places.show', id=id)
 
 def find_closest_places(request):
+
+    print('this is request')
+    print(request)
+
     address = request.GET.get('address')
+
+    print('this is adress')
+    print(address)
 
     # if no address, renders a form message
     if not address:
         return render(request, 'index.html', {"message": "Please enter a location"})
 
     user_lat, user_lng = geocode_address(address)
+    print()
     if user_lat is None or user_lng is None:
         # geocoding failed or location not found
         return render(request, 'index.html', {"message": f"Could not find the location '{address}'. Please try again."})

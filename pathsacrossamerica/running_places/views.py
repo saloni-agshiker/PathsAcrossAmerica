@@ -51,6 +51,7 @@ def create_running_place(request):
         running_place.path_type = request.POST['path_type']
         running_place.terrain_type = request.POST['terrain_type']
         running_place.length = request.POST['length']
+        # NEED TO CALL GEOPY API
         running_place.save()
         return redirect('home.index')
     else:

@@ -1,5 +1,10 @@
 from geopy.geocoders import Nominatim
+import googlemaps
+from datetime import datetime
 import math
+
+from pathsacrossamerica.pathsacrossamerica.settings import MAPS_API_KEY
+
 
 def geocode_address(address: str):
     geolocator = Nominatim(user_agent='pathsacrossamerica')
@@ -7,6 +12,11 @@ def geocode_address(address: str):
     if location:
         return (location.latitude, location.longitude)
     return (None, None)
+
+def geocode_address(address: str):
+    gmaps = googlemaps.Client(key=MAPS_API_KEY)
+    geocode_result = gmaps.geocode(address)
+    return geocode_result
 
 def haversine_distance(lat1, lng1, lat2, lng2):
     R = 3959

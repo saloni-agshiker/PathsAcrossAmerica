@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Closest Places</title>
+</head>
+<body>
+    <h1>Closest Places to "{{ address }}"</h1>
+
+    {% if results %}
+    <img src = "{{ static_map_url }}" alt = "Static map of 3 closest places" />
+        <ul>
+        {% for item in results %}
+            <li>
+                <strong>{{ item.place.name }}</strong><br>
+                {{ item.place.description }}<br>
+                Distance: {{ item.distance|floatformat:2 }} km
+            </li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No places found.</p>
+    {% endif %}
+</body>
+</html>

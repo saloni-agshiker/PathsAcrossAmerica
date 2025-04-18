@@ -10,7 +10,8 @@ key = os.getenv("MAPS_API_KEY")
 
 #Google Maps Static API URL & place_id
 place_id = "ChIJj61dQgK6j4AR4GeTYWZsKWw"
-url = f"https://places.googleapis.com/v1/places/{place_id}?fields=id,displayName&key={key}"
+#url = f"https://places.googleapis.com/v1/places/{place_id}?fields=id,displayName&key={key}"
+url = f"https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key={key}"
 
 #return json file
 headers = {

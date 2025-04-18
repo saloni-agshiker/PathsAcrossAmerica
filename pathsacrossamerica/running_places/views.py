@@ -227,3 +227,12 @@ def find_closest_places(request):
     }
 
     return render(request, 'places_list.html', context)
+
+def view_place(request, id):
+    running_place = get_object_or_404(RunningPlace, id=id)
+    reviews = Review.objects.filter(running_place=running_place)
+    template_data = {}
+    template_data['title'] = running_place.name
+    template_data['running_place'] = running_place
+    template_data['reviews'] = reviews
+    return render(request, 'running_places/view_place.html', {'template_data': template_data})

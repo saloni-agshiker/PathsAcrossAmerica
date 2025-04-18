@@ -3,7 +3,7 @@ from geopy.geocoders import Nominatim
 import googlemaps
 import math
 
-from pathsacrossamerica.pathsacrossamerica.settings import MAPS_API_KEY
+from pathsacrossamerica.settings import MAPS_API_KEY
 
 
 def geocode_address(address: str):

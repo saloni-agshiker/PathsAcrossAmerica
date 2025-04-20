@@ -13,7 +13,7 @@ load_dotenv()
 #retrieve api key from variable in env file
 key = os.getenv("MAPS_API_KEY")
 location = "Atlanta, Georgia"
-from .utils import geocode_address, haversine_distance
+from .utils import geocode_address, validate_address, haversine_distance
 
 # Create your views here.
 
@@ -38,24 +38,49 @@ def index(request):
 
 @login_required
 def create_running_place(request):
-    template_data = {}
-    template_data['title'] = 'Add Place'
+    template_data = {'title': 'Add Place'}
+
     if request.method == 'GET':
-        return render(request, 'running_places/add_place.html',
-                      {'template_data': template_data})
-    if request.method == 'POST' and request.POST['name'] != '':
-        running_place = RunningPlace()
-        running_place.name = request.POST['name']
-        running_place.address = request.POST['address']
-        running_place.description = request.POST['description']
-        running_place.path_type = request.POST['path_type']
-        running_place.terrain_type = request.POST['terrain_type']
-        running_place.length = request.POST['length']
-        # NEED TO CALL GEOPY API
-        running_place.save()
-        return redirect('home.index')
-    else:
         return render(request, 'running_places/add_place.html', {'template_data': template_data})
+
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        address = request.POST.get('address')
+
+        if not name or not address:
+            template_data['error'] = 'Name and address are required.'
+            template_data['form_data'] = request.POST
+            return render(request, 'running_places/add_place.html', {'template_data': template_data})
+
+        # Step 1: Validate address
+        if validate_address(address) == (None, None):
+            template_data['error'] = 'Invalid or undeliverable address. Please enter a valid one.'
+            template_data['form_data'] = request.POST
+            return render(request, 'running_places/add_place.html', {'template_data': template_data})
+
+        # Step 2: Get precise coordinates
+        lat, lng = geocode_address(address)
+        if lat is None or lng is None:
+            template_data['error'] = 'Something went wrong while retrieving coordinates. Please try again.'
+            return render(request, 'running_places/add_place.html', {'template_data': template_data})
+
+        # Save to DB
+        running_place = RunningPlace()
+        running_place.name = name
+        running_place.address = address
+        running_place.description = request.POST.get('description', '')
+        running_place.path_type = request.POST.get('path_type')
+        running_place.terrain_type = request.POST.get('terrain_type')
+        running_place.length = request.POST.get('length')
+        running_place.parking = request.POST.get('parking')
+        running_place.restroom = request.POST.get('restroom')
+        running_place.latitude = lat
+        running_place.longitude = lng
+        running_place.save()
+
+        return redirect('home.index')
+
+    return render(request, 'running_places/add_place.html', {'template_data': template_data})
 
 def show(request, id):
     place = get_object_or_404(RunningPlace, pk=id)

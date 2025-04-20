@@ -10,6 +10,9 @@
             </b><br /><br />
           <form onsubmit="return validateAddress()" method="POST" action="{% url 'running_places.create_running_place' %}">
             {% csrf_token %}
+            {% if template_data.error %}
+                <div class="alert alert-danger mt-3">{{ template_data.error }}</div>
+            {% endif %}
             <p>
               <label for="name">Name:</label>
               <textarea name="name" required

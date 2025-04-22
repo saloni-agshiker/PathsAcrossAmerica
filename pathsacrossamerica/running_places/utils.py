@@ -12,8 +12,11 @@ def validate_address(address: str):
     otherwise returns (None, None).
     """
     url = f"https://addressvalidation.googleapis.com/v1:validateAddress?key={MAPS_API_KEY}"
+
+    # Basic fallback structure for minimal validation
     payload = {
         "address": {
+            "regionCode": "US",
             "addressLines": [address]
         }
     }
@@ -21,7 +24,8 @@ def validate_address(address: str):
     try:
         resp = requests.post(url, json=payload, timeout=5)
         resp.raise_for_status()
-    except requests.RequestException:
+    except requests.RequestException as e:
+        print(f"Address validation request failed: {e}")
         return None, None
 
     result = resp.json().get("result", {})
@@ -34,21 +38,6 @@ def validate_address(address: str):
 
     return None, None
 
-
-
-def geocode_address(address: str):
-    """
-    Uses the Google Maps Geocoding API to retrieve lat/lng.
-    Returns (latitude, longitude) of the first geocoded result,
-    or (None, None) if nothing is found.
-    """
-    gmaps = googlemaps.Client(key=MAPS_API_KEY)
-    results = gmaps.geocode(address)
-    if not results:
-        return None, None
-
-    loc = results[0]["geometry"]["location"]
-    return loc.get("lat"), loc.get("lng")
 
 
 def haversine_distance(lat1, lng1, lat2, lng2):

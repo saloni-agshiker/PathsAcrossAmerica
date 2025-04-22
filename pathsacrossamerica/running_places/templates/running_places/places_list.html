@@ -1,24 +1,26 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Closest Places</title>
-</head>
-<body>
-    <h1>Closest Places to "{{ address }}"</h1>
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+  <h2>Closest Places to "{{ address }}"</h2>
 
-    {% if results %}
-    <img src = "{{ static_map_url }}" alt = "Static map of 3 closest places" />
-        <ul>
-        {% for item in results %}
-            <li>
-                <strong>{{ item.place.name }}</strong><br>
-                {{ item.place.description }}<br>
-                Distance: {{ item.distance|floatformat:2 }} km
-            </li>
-        {% endfor %}
-        </ul>
-    {% else %}
-        <p>No places found.</p>
-    {% endif %}
-</body>
-</html>
+  {% if static_map_url %}
+    <div class="mb-4">
+      <img src="{{ static_map_url }}" class="img-fluid rounded shadow-sm" alt="Static map of 3 closest places">
+    </div>
+  {% endif %}
+
+  {% if results %}
+    <ul class="list-group">
+      {% for item in results %}
+        <li class="list-group-item">
+          <h5 class="mb-1">{{ item.place.name }}</h5>
+          <p class="mb-1">{{ item.place.description }}</p>
+          <small>Distance: {{ item.distance|floatformat:2 }} km</small>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No places found.</p>
+  {% endif %}
+</div>
+{% endblock %}

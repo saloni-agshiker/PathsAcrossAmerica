@@ -14,13 +14,22 @@
       {% for item in results %}
         <li class="list-group-item">
           <h5 class="mb-1">
-            <a href="{{ item.directions_url }}" target="_blank" class="text-decoration-none text-dark">
+            <a href="{% url 'running_places.show' id=item.place.id %}" target="_blank" class="text-decoration-none text-dark">
               {{ item.place.name }}
             </a>
+            <div class="text-center">
+              <button type="submit"
+                class="btn bg-dark text-white">
+                <a href="{{ item.directions_url }}" target="_blank" class="text-decoration-none text-dark">
+              Map
+            </a>
+              </button>
+            </div>
           </h5>
           <p class="mb-1">{{ item.place.description }}</p>
           <small>Distance: {{ item.distance|floatformat:2 }} km</small>
         </li>
+
       {% endfor %}
     </ul>
   {% else %}

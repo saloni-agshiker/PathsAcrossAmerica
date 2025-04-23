@@ -3,7 +3,7 @@ import os
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import RunningPlace, Review
+from .models import RunningPlace, Review, PATH_TYPE_CHOICES, TERRAIN_TYPE_CHOICES, PARKING_CHOICES, RESTROOM_CHOICES
 from dotenv import load_dotenv
 import os
 
@@ -84,7 +84,7 @@ def create_running_place(request):
 
 
 def show(request, id):
-    place = get_object_or_404(RunningPlace, pk=id)
+    place = get_object_or_404(RunningPlace, id=id)
     reviews = Review.objects.filter(running_place=place)
 
     template_data = {}
@@ -92,8 +92,15 @@ def show(request, id):
     template_data['running_place'] = place
     template_data['reviews'] = reviews
 
+    context = {
+        "path_display": PATH_TYPE_CHOICES.get(place.path_type),
+        "terrain_display": TERRAIN_TYPE_CHOICES.get(place.terrain_type),
+        "parking_display": PARKING_CHOICES.get(place.parking),
+        "restroom_display": RESTROOM_CHOICES.get(place.restroom),
+    }
+
     return render(request, 'running_places/show.html', {
-        'template_data': template_data
+        'template_data': template_data, 'context': context
     })
 
 @login_required
@@ -202,13 +209,3 @@ def find_closest_places(request):
     }
 
     return render(request, 'running_places/places_list.html', context)
-
-
-def view_place(request, id):
-    running_place = get_object_or_404(RunningPlace, id=id)
-    reviews = Review.objects.filter(running_place=running_place)
-    template_data = {}
-    template_data['title'] = running_place.name
-    template_data['running_place'] = running_place
-    template_data['reviews'] = reviews
-    return render(request, 'running_places/view_place.html', {'template_data': template_data})

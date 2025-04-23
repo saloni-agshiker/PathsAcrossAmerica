@@ -152,64 +152,44 @@ def find_closest_places(request):
     if user_lat is None or user_lng is None:
         return render(request, 'index.html', {"message": f"Could not find the location '{address}'. Please try again."})
 
-    if not RunningPlace.objects.exists():
-        # Dummy fallback if no places are in the DB
-        results = [
-            {
-                'distance': 0.0,
-                'place': type("Dummy", (), {"name": "Test Place 1", "description": "A dummy location", "latitude": 33.7490, "longitude": -84.3880})(),
-                'lat': 33.7490,
-                'lng': -84.3880,
-            },
-            {
-                'distance': 1.2,
-                'place': type("Dummy", (), {"name": "Test Place 2", "description": "Another dummy", "latitude": 33.7580, "longitude": -84.3900})(),
-                'lat': 33.7580,
-                'lng': -84.3900,
-            },
-            {
-                'distance': 2.5,
-                'place': type("Dummy", (), {"name": "Test Place 3", "description": "Yet another dummy", "latitude": 33.7600, "longitude": -84.3950})(),
-                'lat': 33.7600,
-                'lng': -84.3950,
-            },
-        ]
-    else:
-        places = RunningPlace.objects.all()
-        place_distances = []
 
-        for place in places:
-            dist = haversine_distance(
-                float(user_lat), float(user_lng),
-                float(place.latitude), float(place.longitude)
-            )
-            place_distances.append((dist, place))
+    places = RunningPlace.objects.all()
+    place_distances = []
 
-        place_distances.sort(key=lambda x: x[0])
-        top_3 = place_distances[:3]
+    for place in places:
+        dist = haversine_distance(
+            float(user_lat), float(user_lng),
+            float(place.latitude), float(place.longitude)
+        )
+        place_distances.append((dist, place))
 
-        results = [
-            {
-                'distance': d,
-                'place': p,
-                'lat': float(p.latitude),
-                'lng': float(p.longitude),
-            } for (d, p) in top_3
-        ]
+    place_distances.sort(key=lambda x: x[0])
+    top_3 = place_distances[:3]
+
+    results = [
+        {
+            'distance': d,
+            'place': p,
+            'lat': float(p.latitude),
+            'lng': float(p.longitude),
+            'directions_url': f"https://www.google.com/maps/dir/?api=1&origin={user_lat},{user_lng}&destination={p.latitude},{p.longitude}&travelmode=walking"
+        } for (d, p) in top_3
+    ]
 
     markers_str = ""
     for i, r in enumerate(results, start=1):
         markers_str += f"&markers=color:red%7Clabel:{i}%7C{r['lat']},{r['lng']}"
 
     key = os.getenv("MAPS_API_KEY")
-    center = f"{user_lat},{user_lng}"
+    #center = f"{user_lat},{user_lng}"
+    # Use visible to auto-zoom the map to include all points
+    visible_bounds = "|".join([f"{r['lat']},{r['lng']}" for r in results])
 
     static_map_url = (
         "https://maps.googleapis.com/maps/api/staticmap"
-        f"?center={center}"
-        "&zoom=12"
-        "&size=600x400"
+        f"?size=600x400"
         f"{markers_str}"
+        f"&visible={visible_bounds}"
         f"&key={key}"
     )
 

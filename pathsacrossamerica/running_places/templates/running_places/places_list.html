@@ -13,7 +13,11 @@
     <ul class="list-group">
       {% for item in results %}
         <li class="list-group-item">
-          <h5 class="mb-1">{{ item.place.name }}</h5>
+          <h5 class="mb-1">
+            <a href="{{ item.directions_url }}" target="_blank" class="text-decoration-none text-dark">
+              {{ item.place.name }}
+            </a>
+          </h5>
           <p class="mb-1">{{ item.place.description }}</p>
           <small>Distance: {{ item.distance|floatformat:2 }} km</small>
         </li>
@@ -24,3 +28,4 @@
   {% endif %}
 </div>
 {% endblock %}
+

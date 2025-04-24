@@ -17,15 +17,6 @@ from .utils import validate_address, haversine_distance
 
 # Create your views here.
 
-running_places = [
-    {
-        'id' : 1, 'name' : 'Piedmont Park', 'description' : 'beautiful scenery'
-    },
-    {
-        'id' : 2, 'name' : 'Battery Park', 'description' : 'lots of walking'
-    },
-]
-
 def index(request):
     template_data = {'title': 'Running Places'}
     search_term = request.GET.get('search')
@@ -149,6 +140,11 @@ def get_maps_key():
 
 def find_closest_places(request):
     address = request.GET.get('address')
+    path_type = request.GET.get('path_type')
+    terrain_type = request.GET.get('terrain_type')
+    length = request.GET.get('length')
+    parking = request.GET.get('parking')
+    restroom = request.GET.get('restroom')
 
     if not address:
         return render(request, 'index.html', {"message": "Please enter a location"})
@@ -161,6 +157,16 @@ def find_closest_places(request):
 
 
     places = RunningPlace.objects.all()
+    if path_type != "":
+        places = places.filter(path_type=path_type)
+    if terrain_type != "":
+        places = places.filter(terrain_type=terrain_type)
+    if length:
+        places = places.filter(length__lte=length)
+    if parking != "":
+        places = places.filter(parking=parking)
+    if restroom != "":
+        places = places.filter(restroom=restroom)
     place_distances = []
 
     for place in places:

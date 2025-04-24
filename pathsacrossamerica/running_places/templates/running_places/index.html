@@ -24,6 +24,46 @@
                 <input type="text" id="address" name="address" class="form-control" required>
               </div>
             </div>
+            <p>
+              <label for="path_type">Path Type:</label>
+              <select name="path_type" id="path_type">
+                <option value="">-- Any --</option>
+                <option value="GR">Gravel</option>
+                <option value="DT">Dirt</option>
+                <option value="PV">Paved</option>
+                <option value="CO">Concrete</option>
+              </select>
+            </p>
+            <p>
+              <label for="terrain_type">Path Type:</label>
+              <select name="terrain_type" id="terrain_type">
+                <option value="">-- Any --</option>
+                <option value="FL">Flat</option>
+                <option value="HL">Hilly</option>
+              </select>
+            </p>
+            <p>
+              <label for="length">Max Length of the path (in miles):</label>
+              <output>0</output>
+              <input type="range" min="0" max="100" step="5" id="length" name="length" oninput="this.nextElementSibling.value = this.value">
+              <output>50</output>
+            </p>
+            <p>
+              <label for="parking">Parking Type:</label>
+              <select name="parking" id="parking">
+                <option value="">-- Any --</option>
+                <option value="FR">Free</option>
+                <option value="PA">Paid</option>
+              </select>
+            </p>
+            <p>
+              <label for="restroom">Public Restrooms:</label>
+              <select name="restroom" id="restroom">
+                <option value="">-- Any --</option>
+                <option value="Y">Yes</option>
+                <option value="N">No</option>
+              </select>
+            </p>
             <div class="col-auto align-self-end">
               <button class="btn bg-dark text-white" type="submit">
                 Search

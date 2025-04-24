@@ -22,56 +22,6 @@
             <p>
               <label for="autocomplete">Address:</label>
               <input id="autocomplete" type="text" name="address" required class="form-control">
-
-              <script>
-              function validateAddress() {
-              const addressInput = document.getElementById('address');
-              if (!addressInput.value || addressInput.value.length < 5) {
-                alert("Please enter a valid address.");
-                return false;
-              }
-                  return true;
-              }
-              console.log("Fetching Maps API key...");
-  fetch('/api/get_maps_key') // Make sure this matches your Django route
-    .then(response => {
-      if (!response.ok) {
-        throw new Error(`Network response was not ok: ${response.status}`);
-      }
-      return response.json();
-    })
-    .then(data => {
-      console.log("Received API key:", data.key);
-
-      const script = document.createElement('script');
-      script.src = `https://maps.googleapis.com/maps/api/js?key=${data.key}&libraries=places&callback=initAutocomplete`;
-      script.async = true;
-
-      script.onload = () => {
-        console.log("Google Maps script loaded successfully.");
-      };
-
-      script.onerror = () => {
-        console.error("Failed to load Google Maps script.");
-      };
-
-      document.head.appendChild(script);
-    })
-    .catch(error => {
-      console.error("Error fetching Maps API key:", error);
-    });
-
-  function initAutocomplete() {
-    console.log("Initializing autocomplete...");
-    const input = document.getElementById('autocomplete');
-    if (!input) {
-      console.error("Autocomplete input field not found.");
-      return;
-    }
-    new google.maps.places.Autocomplete(input, { types: ['address'] });
-    console.log("Autocomplete initialized.");
-  }
-</script>
             </p>
             <p>
               <label for="description">Description:</label>
@@ -110,10 +60,10 @@
             <p>
               <label>Parking Type:</label>
               <label>
-                <input type="radio" name ="parking" value="Free"> Free
+                <input type="radio" name ="parking" value="FR"> Free
               </label>
               <label>
-                <input type="radio" name ="parking" value="Paid"> Paid
+                <input type="radio" name ="parking" value="PA"> Paid
               </label>
             </p>
             <p>

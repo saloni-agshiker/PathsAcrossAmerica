@@ -53,14 +53,38 @@ h1, h2, h3, h4, h5, h6 {
   color: #c3935a !important;
 }
 
+/* Base styles for input fields (text, search) */
+input[type="text"],
+input[type="search"] {
+  padding: 0.75rem; /* Consistent vertical padding */
+  border: 1px solid #d3d3d3; /* Consistent border */
+  border-radius: 0.25rem;
+  box-sizing: border-box; /* Include padding and border in height */
+  font-size: 1rem;
+  line-height: 1.5;
+  height: auto; /* Override any default height */
+  vertical-align: middle; /* Good for aligning with buttons */
+}
+
+.btn {
+  display: inline-block;
+  padding: 0.75rem 1.5rem !important;
+  font-size: 1rem !important;
+  line-height: 1.5 !important;
+  text-align: center;
+  text-decoration: none !important;
+  vertical-align: middle !important; /* Add this to control vertical alignment */
+  cursor: pointer;
+  border: 1px solid transparent !important;
+  border-radius: 0.25rem;
+  box-sizing: border-box;
+  height: auto !important;
+}
+
 .btn-primary {
   background-color: #805b2c !important;
   border-color: #805b2c !important;
   color: #F0F8E0 !important;
-  padding: 0.75rem 1.5rem;
-  border-radius: 0.25rem;
-  text-decoration: none;
-  display: inline-block;
   transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
   margin-top: 1rem;
 }
@@ -75,10 +99,6 @@ h1, h2, h3, h4, h5, h6 {
   background-color: #8F7859 !important;
   border-color: #8F7859 !important;
   color: #F0F8E0 !important;
-  padding: 0.75rem 1.5rem;
-  border-radius: 0.25rem;
-  text-decoration: none;
-  display: inline-block;
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
@@ -195,4 +215,45 @@ label {
   border-radius: 0.25rem;
   padding: 0.5rem 0.75rem;
   margin-bottom: 1rem;
+  box-sizing: border-box; /* Ensure box-sizing */
+  font-size: 1rem;
+  line-height: 1.5;
+  height: auto;
+  vertical-align: middle;
+}
+
+/* Unified button sizing */
+.btn-custom {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  text-align: center;
+  text-decoration: none;
+  vertical-align: middle;
+  border: 1px solid transparent;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  box-sizing: border-box;
+  display: inline-block;
+  width: 100px; /* Make all buttons same width */
+}
+
+/* Edit button color */
+.btn-edit {
+  background-color: #8F7859; /* your brown color */
+  color: #F0F8E0;
+}
+
+.btn-edit:hover {
+  background-color: #736147;
+}
+
+/* Delete button color */
+.btn-delete {
+  background-color: #dc3545; /* Bootstrap red */
+  color: white;
+}
+
+.btn-delete:hover {
+  background-color: #a71d2a;
 }

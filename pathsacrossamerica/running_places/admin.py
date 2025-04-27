@@ -3,6 +3,7 @@ from .models import RunningPlace, Review
 from .utils import validate_address
 from django.contrib import messages
 from django.db import transaction
+admin.site.register(Review)
 
 
 @admin.register(RunningPlace)

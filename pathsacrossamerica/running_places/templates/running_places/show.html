@@ -5,16 +5,19 @@
   <div class="container">
     <div class="row mt-3">
       <div class="col-md-6 mx-auto mb-3">
-        <h2>{{ template_data.running_place.name }}</h2>
-        <hr />
-        <p><b>Description:</b> {{template_data.running_place.description}}</p>
-        <p><b>Address:</b> {{template_data.running_place.address}}</p>
-        <p><b>Path Type:</b> {{ context.path_display }}</p>
-        <p><b>Terrain Type:</b> {{ context.terrain_display }}</p>
-        <p><b>Length:</b> {{template_data.running_place.length}} mile(s)</p>
-        <p><b>Parking:</b> {{ context.parking_display }}</p>
-        <p><b>Public Restrooms:</b> {{ context.restroom_display }}</p>
-            </div>
+        <div class="card shadow p-3 mb-4 rounded">
+          <div class="card-body">
+            <h2 class="card-title">{{ template_data.running_place.name }}</h2>
+            <hr class="card-subtitle mb-2 text-muted" />
+            <p class="card-text"><b>Description:</b> {{template_data.running_place.description}}</p>
+            <p class="card-text"><b>Address:</b> {{template_data.running_place.address}}</p>
+            <p class="card-text"><b>Path Type:</b> {{ context.path_display }}</p>
+            <p class="card-text"><b>Terrain Type:</b> {{ context.terrain_display }}</p>
+            <p class="card-text"><b>Length:</b> {{template_data.running_place.length}} mile(s)</p>
+            <p class="card-text"><b>Parking:</b> {{ context.parking_display }}</p>
+            <p class="card-text"><b>Public Restrooms:</b> {{ context.restroom_display }}</p>
+          </div>
+        </div>
         <h2>Reviews</h2>
         <hr />
         <ul class="list-group">
@@ -28,11 +31,11 @@
             </h6>
             <p class="card-text">{{ review.comment }}</p>
             {% if user.is_authenticated and user == review.user %}
-            <a class="btn btn-primary"
-              href="{% url 'running_places.edit_review' id=template_data.running_place.id review_id=review.id %}">Edit
+            <a class="btn-custom btn-edit"
+               href="{% url 'running_places.edit_review' id=template_data.running_place.id review_id=review.id %}">Edit
             </a>
-            <a class="btn btn-danger"
-              href="{% url 'running_places.delete_review' id=template_data.running_place.id review_id=review.id %}">Delete
+            <a class="btn-custom btn-delete"
+               href="{% url 'running_places.delete_review' id=template_data.running_place.id review_id=review.id %}">Delete
             </a>
             {% endif %}
           </li>

@@ -53,14 +53,37 @@ h1, h2, h3, h4, h5, h6 {
   color: #c3935a !important;
 }
 
+input[type="text"],
+input[type="search"] {
+  padding: 0.75rem;
+  border: 1px solid #d3d3d3;
+  border-radius: 0.25rem;
+  box-sizing: border-box;
+  font-size: 1rem;
+  line-height: 1.5;
+  height: auto;
+  vertical-align: middle;
+}
+
+.btn {
+  display: inline-block;
+  padding: 0.75rem 1.5rem !important;
+  font-size: 1rem !important;
+  line-height: 1.5 !important;
+  text-align: center;
+  text-decoration: none !important;
+  vertical-align: middle !important;
+  cursor: pointer;
+  border: 1px solid transparent !important;
+  border-radius: 0.25rem;
+  box-sizing: border-box;
+  height: auto !important;
+}
+
 .btn-primary {
   background-color: #805b2c !important;
   border-color: #805b2c !important;
   color: #F0F8E0 !important;
-  padding: 0.75rem 1.5rem;
-  border-radius: 0.25rem;
-  text-decoration: none;
-  display: inline-block;
   transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
   margin-top: 1rem;
 }
@@ -75,10 +98,6 @@ h1, h2, h3, h4, h5, h6 {
   background-color: #8F7859 !important;
   border-color: #8F7859 !important;
   color: #F0F8E0 !important;
-  padding: 0.75rem 1.5rem;
-  border-radius: 0.25rem;
-  text-decoration: none;
-  display: inline-block;
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
@@ -195,4 +214,43 @@ label {
   border-radius: 0.25rem;
   padding: 0.5rem 0.75rem;
   margin-bottom: 1rem;
+  box-sizing: border-box;
+  font-size: 1rem;
+  line-height: 1.5;
+  height: auto;
+  vertical-align: middle;
+}
+
+/* button sizing */
+.btn-custom {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  text-align: center;
+  text-decoration: none;
+  vertical-align: middle;
+  border: 1px solid transparent;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  box-sizing: border-box;
+  display: inline-block;
+  width: 100px;
+}
+
+.btn-edit {
+  background-color: #8F7859;
+  color: #F0F8E0;
+}
+
+.btn-edit:hover {
+  background-color: #736147;
+}
+
+.btn-delete {
+  background-color: #dc3545;
+  color: white;
+}
+
+.btn-delete:hover {
+  background-color: #a71d2a;
 }

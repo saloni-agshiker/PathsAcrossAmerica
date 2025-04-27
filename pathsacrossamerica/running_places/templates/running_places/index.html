@@ -9,18 +9,15 @@
         <h2>Search for Running Locations</h2>
         <hr />
 
-        <!-- Display any error/success message if passed from the view -->
         {% if message %}
           <p style="color: red;">{{ message }}</p>
         {% endif %}
 
-        <!-- The Search Form -->
         <form method="GET" action="{% url 'running_places.find_closest_places' %}">
           <div class="row">
             <div class="col-auto">
               <label for="address" class="form-label">Enter a location:</label>
               <div class="input-group">
-                <span class="input-group-text">Search</span>
                 <input type="text" id="address" name="address" class="form-control" required>
               </div>
             </div>

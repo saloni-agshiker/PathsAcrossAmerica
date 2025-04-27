@@ -3,37 +3,40 @@
 <div class="container mt-4">
   <h2>Closest Places to "{{ address }}"</h2>
 
-  {% if static_map_url %}
-    <div class="mb-4">
-      <img src="{{ static_map_url }}" class="img-fluid rounded shadow-sm" alt="Static map of 3 closest places">
+  <div class="row">
+    <div class="col-md-6">
+      {% if results %}
+        <ul class="list-group">
+          {% for item in results %}
+            <li class="list-group-item">
+              <h5 class="mb-1 d-flex justify-content-between align-items-center">
+                <a href="{% url 'running_places.show' id=item.place.id %}" target="_blank" class="text-decoration-none text-dark">
+                  {{ item.place.name }}
+                </a>
+                <div>
+                  <button type="button" class="btn btn-sm bg-dark text-white">
+                    <a href="{{ item.directions_url }}" target="_blank" class="text-decoration-none text-white">
+                      Map
+                    </a>
+                  </button>
+                </div>
+              </h5>
+              <p class="mb-1">{{ item.place.description }}</p>
+              <small>Distance from Searched Location: {{ item.distance|floatformat:2 }} km</small>
+            </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p>No places found.</p>
+      {% endif %}
     </div>
-  {% endif %}
-
-  {% if results %}
-    <ul class="list-group">
-      {% for item in results %}
-        <li class="list-group-item">
-          <h5 class="mb-1">
-            <a href="{% url 'running_places.show' id=item.place.id %}" target="_blank" class="text-decoration-none text-dark">
-              {{ forloop.counter }}. {{ item.place.name }}
-            </a>
-            <div class="text-center">
-              <button type="submit"
-                class="btn bg-dark text-white">
-                <a href="{{ item.directions_url }}" target="_blank" class="text-decoration-none text-dark">
-              Map
-            </a>
-              </button>
-            </div>
-          </h5>
-          <p class="mb-1">{{ item.place.description }}</p>
-          <small>Distance from Searched Location: {{ item.distance|floatformat:2 }} miles</small>
-        </li>
-      {% endfor %}
-    </ul>
-  {% else %}
-    <p>No places found.</p>
-  {% endif %}
+    <div class="col-md-6">
+      {% if static_map_url %}
+        <div class="mb-4">
+          <img src="{{ static_map_url }}" class="img-fluid rounded shadow-sm" alt="Static map of 3 closest places">
+        </div>
+      {% endif %}
+    </div>
+  </div>
 </div>
 {% endblock %}
-

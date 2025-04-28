@@ -185,7 +185,7 @@ def find_closest_places(request):
             'place': p,
             'lat': float(p.latitude),
             'lng': float(p.longitude),
-            'directions_url': f"https://www.google.com/maps/dir/?api=1&origin={user_lat},{user_lng}&destination={p.latitude},{p.longitude}&travelmode=walking"
+            'directions_url': f"https://www.google.com/maps/dir/?api=1&origin={user_lat},{user_lng}&destination={p.latitude},{p.longitude}&travelmode=driving"
         } for (d, p) in top_3
     ]
 

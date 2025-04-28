@@ -11,7 +11,7 @@
             <li class="list-group-item">
               <h5 class="mb-1 d-flex justify-content-between align-items-center">
                 <a href="{% url 'running_places.show' id=item.place.id %}" target="_blank" class="text-decoration-none text-dark">
-                  {{ item.place.name }}
+                  {{ forloop.counter }}. {{ item.place.name }}
                 </a>
                 <div>
                   <button type="button" class="btn btn-sm bg-dark text-white">
@@ -22,7 +22,7 @@
                 </div>
               </h5>
               <p class="mb-1">{{ item.place.description }}</p>
-              <small>Distance from Searched Location: {{ item.distance|floatformat:2 }} km</small>
+              <small>Distance from Searched Location: {{ item.distance|floatformat:2 }} miles</small>
             </li>
           {% endfor %}
         </ul>

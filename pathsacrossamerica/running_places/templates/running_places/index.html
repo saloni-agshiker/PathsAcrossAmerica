@@ -2,11 +2,10 @@
 {% load static %}
 {% block content %}
 
-<div class="p-3">
-  <div class="container">
-    <div class="row mt-3">
-      <div class="col mx-auto mb-3">
-        <h2>Search for Running Locations</h2>
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+  <div class="card shadow p-4" style="width: 100%; max-width: 600px;">
+    <div class="card-body">
+        <h2 class="text-center mb-4">Search for Running Locations</h2>
         <hr />
 
         {% if message %}
@@ -14,59 +13,61 @@
         {% endif %}
 
         <form method="GET" action="{% url 'running_places.find_closest_places' %}">
-          <div class="row">
-            <div class="col-auto">
+            <div class="mb-3">
               <label for="address" class="form-label">Enter a location:</label>
-              <div class="input-group">
-                <input type="text" id="address" name="address" class="form-control" required>
-              </div>
+              <input type="text" id="address" name="address" class="form-control" required>
             </div>
-            <p>
-              <label for="path_type">Path Type:</label>
-              <select name="path_type" id="path_type">
+
+            <div class="mb-3">
+              <label for="path_type" class="form-label">Path Type:</label>
+              <select name="path_type" id="path_type" class="form-select">
                 <option value="">-- Any --</option>
                 <option value="GR">Gravel</option>
                 <option value="DT">Dirt</option>
                 <option value="PV">Paved</option>
                 <option value="CO">Concrete</option>
               </select>
-            </p>
-            <p>
-              <label for="terrain_type">Path Type:</label>
-              <select name="terrain_type" id="terrain_type">
+            </div>
+
+            <div class="mb-3">
+              <label for="terrain_type" class="form-label">Terrain Path:</label>
+              <select name="terrain_type" id="terrain_type" class="form-select">
                 <option value="">-- Any --</option>
                 <option value="FL">Flat</option>
                 <option value="HL">Hilly</option>
               </select>
-            </p>
-            <p>
-              <label for="length">Max Length of the path (in miles):</label>
-              <output>0</output>
-              <input type="range" min="0" max="100" step="5" id="length" name="length" oninput="this.nextElementSibling.value = this.value">
-              <output>50</output>
-            </p>
-            <p>
-              <label for="parking">Parking Type:</label>
-              <select name="parking" id="parking">
+            </div>
+
+            <div class="mb-3">
+              <label for="length" class="form-label">Max Length of the path (in miles):</label>
+              <div class="d-flex align-items-center gap-2">
+                <output>0</output>
+                <input type="range" min="0" max="100" step="5" id="length" name="length" oninput="this.nextElementSibling.value = this.value" class="form-range">
+                <output>50</output>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="parking" class="form-label">Parking Type:</label>
+              <select name="parking" id="parking" class="form-select">
                 <option value="">-- Any --</option>
                 <option value="FR">Free</option>
                 <option value="PA">Paid</option>
               </select>
-            </p>
-            <p>
-              <label for="restroom">Public Restrooms:</label>
-              <select name="restroom" id="restroom">
+            </div>
+
+            <div class="mb-3">
+              <label for="restroom" class="form-label">Public Restrooms:</label>
+              <select name="restroom" id="restroom" class="form-select">
                 <option value="">-- Any --</option>
                 <option value="Y">Yes</option>
                 <option value="N">No</option>
               </select>
-            </p>
-            <div class="col-auto align-self-end">
-              <button class="btn bg-dark text-white" type="submit">
-                Search
-              </button>
             </div>
-          </div>
+
+            <div class="text-center">
+              <button class="btn bg-dark text-white w-100" type="submit">Search</button>
+            </div>
         </form>
       </div>
     </div>

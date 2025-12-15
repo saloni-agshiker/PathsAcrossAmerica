@@ -24,10 +24,9 @@ The application is built in Python using the Django framework following the Mode
 
 ***
 
-## 🧗‍♂️ Challenges we Faced
-
-
-***
-
 ## 📽 Demo
+![Home Page](images/PathsAcrossAmerica_SS3.png)
 
+![Path Search](images/PathsAcrossAmerica_SS2.png)
+
+![Adding a Path](images/PathsAcrossAmerica_SS1.png)

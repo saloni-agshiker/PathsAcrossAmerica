@@ -26,3 +26,8 @@ The application is built in Python using the Django framework following the Mode
 
 ## 🧗‍♂️ Challenges we Faced
 
+
+***
+
+## 📽 Demo
+
